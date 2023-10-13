@@ -41,7 +41,39 @@ class Usuario extends ActiveRecord {
         } else if($this->password !== $this->password2) {
             self::$alertas['error'][] = 'Las Contraseñas No Coinciden';
         }
-
+        
         return self::$alertas;
+    }
+    
+    public function validarEmail() {
+        if(!$this->correo) {
+            self::$alertas['error'][] = 'El correo electrónico es obligatorio';
+        }
+        if(!filter_var($this->correo, FILTER_VALIDATE_EMAIL)) {
+            self::$alertas['error'][] = 'El correo electrónico no es válido';
+        }
+        
+        return self::$alertas;
+    }
+
+    public function validarPassword() {
+        if(!$this->password) {
+            self::$alertas['error'][] = 'La Contraseña es Obligatoria';
+        } else if(strlen($this->password) < 6) {
+            self::$alertas['error'][] = 'La Contraseña Debe Tener al Menos 6 Caracteres';
+        } else if($this->password !== $this->password2) {
+            self::$alertas['error'][] = 'Las Contraseñas No Coinciden';
+        }
+        
+        return self::$alertas;
+    }
+
+    public function hashPassword () {
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+    }
+
+    public function crearToken() {
+        // $this->token = md5(uniqid()); return 32 caracteres
+        $this->token = uniqid();
     }
 }

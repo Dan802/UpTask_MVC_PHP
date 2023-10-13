@@ -17,9 +17,9 @@
             </div>
         
             <div class="campo">
-                <label for="email">Correo Electrónico</label>
-                <input type="email" name="email"
-                id="email" placeholder="Escribe tu Correo Electrónico"
+                <label for="correo">Correo Electrónico</label>
+                <input type="correo" name="correo"
+                id="correo" placeholder="Escribe tu Correo Electrónico"
                 value="<?php echo $usuario->correo; ?>">
             </div>
 
