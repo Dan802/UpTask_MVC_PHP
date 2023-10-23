@@ -10,17 +10,48 @@ class LoginController {
 
     public static function Login(Router $router) {
 
+        $alertas = [];
+
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo 'q crack';
+            $usuario = new Usuario($_POST);
+
+            $alertas = $usuario->validarLogin();
+
+            if(empty($alertas)) {
+
+                $usuario = Usuario::where('correo', $usuario->correo);
+
+                if(!$usuario || !$usuario->confirmado) {
+                    Usuario::setAlerta('error', 'El usuario no existe o no esta confirmado');
+                } else {
+                    
+                    if( password_verify($_POST['password'], $usuario->password)) {
+
+                        $_SESSION['id'] = $usuario->id;
+                        $_SESSION['nombre'] = $usuario->nombre;
+                        $_SESSION['correo'] = $usuario->correo;
+                        $_SESSION['login'] = true;
+
+                        header('Location: /dashboard');
+                        
+                    } else {
+                        Usuario::setAlerta('error', 'Contraseña incorrecta');
+                    }
+                }
+            }
+            $alertas = Usuario::getAlertas();
         }
 
+
         $router->render('auth/login', [
-            'title' => 'Iniciar Sesión'
+            'title' => 'Iniciar Sesión',
+            'alertas' => $alertas
         ]);
     }
 
     public static function logout() {
-        echo 'hola';
+        $_SESSION = [];
+        header('Location: /');
     }
 
     public static function crear(Router $router) {
