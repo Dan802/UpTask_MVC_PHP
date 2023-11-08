@@ -20,8 +20,18 @@
 
     // <<===== Funciones =====>>
 
-    function filtrarTareas(e) {
-        const filtro = e.target.value;
+    function filtrarTareas(e, vble = true) {
+        
+        let filtro = 'e.target.value';
+
+        if(vble) {
+            console.log(e);
+            filtro = e.target.value;
+        } else {
+            filtro = e.value;
+        }
+        
+        console.log(filtro);
 
         if(filtro !== '') {
             filtradas = tareas.filter(tarea => tarea.estado === filtro);
@@ -49,6 +59,7 @@
     }
 
     function mostrarTareas() {
+
         limpiarTareas();
 
         totalPendientes();
@@ -121,11 +132,8 @@
         const totalPendientes = tareas.filter(tarea => tarea.estado === '0');
         const pendientesRadio = document.querySelector('#pendientes');
 
-        console.log(totalPendientes);
-
         if(totalPendientes.length === 0) {
             pendientesRadio.disabled = true;
-            console.log('hola');
         } else {
             pendientesRadio.disabled = false;
         }
@@ -273,12 +281,22 @@
                     proyectoId: resultApiDataReturn.proyectoId 
                 }
 
-                tareas = [...tareas, tareaNuevaObj];
-                mostrarTareas();
+                tareas = [tareaNuevaObj, ...tareas];
+                agregarTareaDesdeFiltradas();
             }
 
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    function agregarTareaDesdeFiltradas() {
+        const filtros = document.querySelectorAll('#filtros input[type="radio"');
+
+        if(filtros[2].checked) {
+            filtrarTareas(filtros[2], false);
+        } else {
+            mostrarTareas();
         }
     }
 
