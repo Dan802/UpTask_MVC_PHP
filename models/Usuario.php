@@ -12,6 +12,8 @@ class Usuario extends ActiveRecord {
     public $correo;
     public $password;
     public $password2;
+    public $password_actual;
+    public $password_nuevo;
     public $token;
     public $confirmado;
 
@@ -22,8 +24,26 @@ class Usuario extends ActiveRecord {
         $this->correo = $args['correo'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->password2 = $args['password2'] ?? null;
+        $this->password_actual = $args['password_actual'] ?? null;
+        $this->password_nuevo = $args['password_nuevo'] ?? null;
         $this->token = $args['token'] ?? '';
         $this->confirmado = $args['confirmado'] ?? 0;
+    }
+
+    // Validar el Login de Usuarios
+    public function ValidarLogin() {
+        if(!$this->correo) {
+            self::$alertas['error'][] = 'El Correo Electrónico del Usuario es Obligatorio';
+        }
+        if(!filter_var($this->correo, FILTER_VALIDATE_EMAIL)) {
+            self::$alertas['error'][] = 'El correo electrónico no es válido';
+        }
+        if(!$this->password) {
+            self::$alertas['error'][] = 'La Contraseña es Obligatoria';
+        } else if(strlen($this->password) < 6) {
+            self::$alertas['error'][] = 'Contraseña incorrecta';
+        }
+        return self::$alertas;
     }
 
     // validacion para cuentas nuevas
@@ -56,7 +76,7 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
-    public function validarPassword() {
+    public function validarPassword() : array {
         if(!$this->password) {
             self::$alertas['error'][] = 'La Contraseña es Obligatoria';
         } else if(strlen($this->password) < 6) {
@@ -66,6 +86,33 @@ class Usuario extends ActiveRecord {
         }
         
         return self::$alertas;
+    }
+
+    public function validar_perfil() : array {
+        if(!$this->nombre) {
+            self::$alertas['error'][] = 'El nombre es obligatorio';
+        }
+        if(!$this->correo) {
+            self::$alertas['error'][] = 'El correo electrónico es obligatorio';
+        }
+        return self::$alertas;
+    }
+
+    public function nuevo_password() : array {
+        if(!$this->password_actual){
+            self::$alertas['error'][] = 'La contraseña actual es obligatoria';
+        }
+        if(!$this->password_nuevo){
+            self::$alertas['error'][] = 'La nueva contraseña es obligatoria';
+        }
+        if(strlen($this->password_nuevo) < 6) {
+            self::$alertas['error'][] = 'La contraseña debe contener al menos 6 caracteres';
+        }
+        return self::$alertas;
+    }
+
+    public function comprobar_password() : bool {
+        return password_verify($this->password_actual, $this->password);
     }
 
     public function hashPassword () {
