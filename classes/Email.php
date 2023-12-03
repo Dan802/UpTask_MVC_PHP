@@ -22,11 +22,11 @@ class Email extends ActiveRecord{
 
         $phpmailer = new PHPMailer();
         $phpmailer->isSMTP();
-        $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+        $phpmailer->Host = $_ENV['EMAIL_HOST'];
         $phpmailer->SMTPAuth = true;
-        $phpmailer->Port = 2525;
-        $phpmailer->Username = '14b5c179f0ec31';
-        $phpmailer->Password = 'cf91be2720ffd6';
+        $phpmailer->Port = $_ENV['EMAIL_PORT'];
+        $phpmailer->Username = $_ENV['EMAIL_USER'];
+        $phpmailer->Password = $_ENV['EMAIL_PASS'];
 
         $phpmailer->setFrom('cuentas@uptask.com');
         $phpmailer->addAddress('cuentas@uptask.com', 'uptask.com');
@@ -38,9 +38,9 @@ class Email extends ActiveRecord{
         $contenido = '<html>';
         $contenido .= <<<HTML
             <p><strong>Hola $this->nombre</strong> Has Creado tu cuenta en UpTask, solo debes confirmarla en el siguiente enlace.</p>
-            <p>Presiona aquí: <a href='http://localhost:3000/confirmar?token=$this->token'>Confirmar Cuenta</a></p>
-            <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje.</p>
         HTML; 
+        $contenido .= "<p>Presiona aquí: <a href= '" . $_ENV['APP_URL'] . "'/confirmar?token=" . $this->token . "'>Confirmar Cuenta</a></p>";
+        $contenido .= "<p>Si tu no creaste esta cuenta, puedes ignorar este mensaje.</p>";
         $contenido .= '</html>';
 
         $phpmailer->Body = $contenido;
@@ -57,11 +57,11 @@ class Email extends ActiveRecord{
     public function enviarInstrucciones() {
         $phpmailer = new PHPMailer();
         $phpmailer->isSMTP();
-        $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+        $phpmailer->Host = $_ENV['EMAIL_HOST'];
         $phpmailer->SMTPAuth = true;
-        $phpmailer->Port = 2525;
-        $phpmailer->Username = '14b5c179f0ec31';
-        $phpmailer->Password = 'cf91be2720ffd6';
+        $phpmailer->Port = $_ENV['EMAIL_PORT'];
+        $phpmailer->Username = $_ENV['EMAIL_USER'];
+        $phpmailer->Password = $_ENV['EMAIL_PASS'];
 
         $phpmailer->setFrom('cuentas@uptask.com');
         $phpmailer->addAddress('cuentas@uptask.com', 'uptask.com');
@@ -73,9 +73,9 @@ class Email extends ActiveRecord{
         $contenido = '<html>';
         $contenido .= <<<HTML
             <p><strong>Hola $this->nombre</strong> Parece que has olvidadto tu contraseña, sigue el siguiente enlace para recuperarlo.</p>
-            <p>Presiona aquí: <a href='http://localhost:3000/reestablecer?token=$this->token'>Reestablecer Contraseña</a></p>
-            <p>Si no has intentado reestablecer tu cuenta, puedes ignorar este mensaje.</p>
         HTML; 
+        $contenido .= "<p>Presiona aquí: <a href= '" . $_ENV['APP_URL'] . "'/reestablecer?token=" . $this->token . "'>Reestablecer Contraseña</a></p>";
+        $contenido .= "<p>Si no has intentado reestablecer tu cuenta, puedes ignorar este mensaje.</p>";
         $contenido .= '</html>';
 
         $phpmailer->Body = $contenido;

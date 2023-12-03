@@ -22,7 +22,8 @@ class Router
 
         session_start();
 
-        $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
+        // $currentUrl = $_SERVER['PATH_INFO'] ?? '/';
+        $currentUrl = strtok($_SERVER['REQUEST_URI'], '?') ?? '/'; //No detecta el query string
         $method = $_SERVER['REQUEST_METHOD'];
 
         if ($method === 'GET') {

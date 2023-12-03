@@ -45,7 +45,7 @@
     async function obtenerTareas() {
         try {
             const proyectoId = obtenerProyectoId();
-            const url = `/api/tareas?id=${proyectoId}`;
+            const url = `/api/tareas?id=${proyectoId}`; //El backend y el js deben quedar en el mismo dominio
             const respuesta = await fetch(url);
             const resultado = await respuesta.json();
             // const {tareas} = resultado;
