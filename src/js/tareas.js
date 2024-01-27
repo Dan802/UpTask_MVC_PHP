@@ -290,6 +290,17 @@
 
             tareas = [tareaNuevaObj, ...tareas];
             agregarTareaDesdeFiltradas();
+        } else {
+            const modal = document.querySelector('.modal');
+
+            mostrarAlertaUI(resultApiDataReturn.mensaje,
+                resultApiDataReturn.tipo,
+                document.querySelector('.formulario legend'));
+
+            setTimeout(() => {
+                modal.remove();
+                // window.location.reload();
+            }, 3000);
         }
     }
 
@@ -326,43 +337,56 @@
             console.log(valor);
         }*/
 
+        let resultado = {tipo : '', mensaje : ''};
+
         try {
             const url = '/api/tarea/actualizar';
             const respuesta = await fetch(url, { method: 'POST', body: datos });
-            const resultado = await respuesta.json();
+            resultado = await respuesta.json();
 
-            if(resultado.respuesta.tipo === 'exito') {
-                // mostrarAlertaUI(
-                //     resultado.respuesta.mensaje, 
-                //     resultado.respuesta.tipo, 
-                //     document.querySelector('.contenedor-nueva-tarea'));
-
-                Swal.fire(
-                    '', 
-                    resultado.respuesta.mensaje,
-                    'success'
-                );
-
-                const modal = document.querySelector('.modal');
-                if(modal) {
-                    modal.remove();
-                }
-
-                // Modificamos el estado de la tarea mediante un nuevo arreglo en memoria
-                tareas = tareas.map(tareaMemoria => {
-                    if(tareaMemoria.id === id) {
-                        tareaMemoria.estado = estado;
-                        tareaMemoria.nombre = nombre;
-                    }
-
-                    return tareaMemoria;
-                });
-
-                mostrarTareas();
-            }
-            
         } catch (error) {
             console.log(error);
+        }
+
+        if(resultado.tipo === 'exito') {
+            // mostrarAlertaUI(
+            //     resultado.mensaje, 
+            //     resultado.tipo, 
+            //     document.querySelector('.contenedor-nueva-tarea'));
+
+            Swal.fire(
+                '', 
+                resultado.mensaje,
+                'success'
+            );
+
+            const modal = document.querySelector('.modal');
+            if(modal) {
+                modal.remove();
+            }
+
+            // Modificamos el estado de la tarea mediante un nuevo arreglo en memoria
+            tareas = tareas.map(tareaMemoria => {
+                if(tareaMemoria.id === id) {
+                    tareaMemoria.estado = estado;
+                    tareaMemoria.nombre = nombre;
+                }
+
+                return tareaMemoria;
+            });
+
+            mostrarTareas();
+        } else {
+            Swal.fire(
+                '', 
+                resultado.mensaje,
+                'error'
+            );
+
+            const modal = document.querySelector('.modal');
+            if(modal) {
+                modal.remove();
+            }
         }
     }
 

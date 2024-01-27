@@ -98,6 +98,14 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
+    public function validar_usuarioid() {
+        if((int)$this->id === 1) {
+            self::$alertas['error'][] = 'Para realizar esta acción debes crear tu propia cuenta';
+        }
+
+        return self::$alertas;
+    }
+
     public function nuevo_password() : array {
         if(!$this->password_actual){
             self::$alertas['error'][] = 'La contraseña actual es obligatoria';
