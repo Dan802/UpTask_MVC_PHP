@@ -247,46 +247,49 @@
         const datosToSend = new FormData();
         datosToSend.append('nombre', tarea);
         datosToSend.append('proyectoId', obtenerProyectoId());
+        let resultApiDataReturn = '';
+
+        console.log(tarea)
 
         try {
             
             // 1. Nos conectamos a la api
             // 1. Request: A la vez que nos conectamos estamos enviando datos por medio de $_POST
-            const urlAgregarTarea = 'http://localhost:3000/api/tarea';
+            const urlAgregarTarea = '/api/tarea';
             const respuestaDeLaConexion = await fetch(urlAgregarTarea, {
                 method: 'POST',
                 body: datosToSend
             });
 
             // 2. Response: Datos retornados de la api (La api siempre debe retornar JSON)
-            const resultApiDataReturn = await respuestaDeLaConexion.json();
-            
-            if(resultApiDataReturn.tipo === 'exito') {
-                
-                const modal = document.querySelector('.modal');
-
-                mostrarAlertaUI(resultApiDataReturn.mensaje,
-                    resultApiDataReturn.tipo,
-                    document.querySelector('.formulario legend'));
-
-                setTimeout(() => {
-                    modal.remove();
-                    // window.location.reload();
-                }, 3000);
-
-                const tareaNuevaObj = {
-                    estado: "0",
-                    id: resultApiDataReturn.id,
-                    nombre: tarea, 
-                    proyectoId: resultApiDataReturn.proyectoId 
-                }
-
-                tareas = [tareaNuevaObj, ...tareas];
-                agregarTareaDesdeFiltradas();
-            }
+            resultApiDataReturn = await respuestaDeLaConexion.json();
 
         } catch (error) {
             console.log(error);
+        }
+
+        if(resultApiDataReturn.tipo === 'exito') {
+                
+            const modal = document.querySelector('.modal');
+
+            mostrarAlertaUI(resultApiDataReturn.mensaje,
+                resultApiDataReturn.tipo,
+                document.querySelector('.formulario legend'));
+
+            setTimeout(() => {
+                modal.remove();
+                // window.location.reload();
+            }, 3000);
+
+            const tareaNuevaObj = {
+                estado: "0",
+                id: resultApiDataReturn.id,
+                nombre: tarea, 
+                proyectoId: resultApiDataReturn.proyectoId 
+            }
+
+            tareas = [tareaNuevaObj, ...tareas];
+            agregarTareaDesdeFiltradas();
         }
     }
 
@@ -324,7 +327,7 @@
         }*/
 
         try {
-            const url = 'http://localhost:3000/api/tarea/actualizar';
+            const url = '/api/tarea/actualizar';
             const respuesta = await fetch(url, { method: 'POST', body: datos });
             const resultado = await respuesta.json();
 
@@ -393,7 +396,7 @@
         datos.append('url', obtenerProyectoId());
 
         try {
-            const url = 'http://localhost:3000/api/tarea/eliminar';
+            const url = '/api/tarea/eliminar';
             const respuesta = await fetch(url, {method: 'POST', body: datos});
             const resultado = await respuesta.json();
 

@@ -1,3 +1,19 @@
+<div class="welcome visible" id="welcome">
+    <h1>¡Hola! ¿Primera vez por aquí?</h1>
+
+    <p>Puedes crear una cuenta totalmente gratis y con todas las funcionalidades disponibles. Anímate.</p>
+
+    <p><br>Si en cambio, solo pasabas a mirar el sitio, puedes ingresar con el siguiete usuario:</p>
+    <p><span>Correo:</span> juanfgonzalez@correo.com</p>
+    <p><span>Contraseña:</span> 123456</p>
+
+    <button class="welcome__btn">
+        <p>Entendido</p>
+    </button>
+
+    <p id="welcome__info">Para ver mas proyectos presiona el <a href="https://juanfgonzalez.netlify.app">Enlace</a></p>
+</div>
+
 <div class="contenedor login">
     
 <?php include_once __DIR__ . '/../templates/nombre-sitio.php'; ?>
@@ -30,3 +46,7 @@
         </div>
     </div>
 </div>
+
+<?php 
+    $script = '<script src="build/js/welcome.js"></script>';
+?>
