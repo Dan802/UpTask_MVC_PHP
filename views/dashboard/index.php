@@ -26,7 +26,6 @@ function iterarProyectos($proyectos)
 {
     foreach ($proyectos as $proyecto) {
         echo '<li class="proyecto">';
-        echo '<span>' . $proyecto->id . '.&nbsp;</span>';
         echo '<a href="/proyecto?id=' . $proyecto->url . '">';
         echo $proyecto->proyecto;
         echo '</a>';

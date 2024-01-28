@@ -1,0 +1,70 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.welcome.visible {
+    visibility: visible;
+}
+
+.welcome {
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    position: absolute;
+    padding: 2rem;
+    background-color: whitesmoke;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    border-radius: .5rem;
+
+    box-shadow: 8px 7px 11px -1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 8px 7px 11px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 8px 7px 11px -1px rgba(0,0,0,0.75);
+
+    h1 {
+        font-size: large;
+    }
+
+    p {
+        color: darken($color: v.$grisOscuro, $amount: 20);
+        font-size: medium;
+        margin: 0;
+
+        span {
+            color: black;
+            font-weight: 900;
+        }
+
+        a {
+            font-weight: 900;
+            color: #e07915;
+        }
+    }
+
+    &__btn {
+        all: unset;
+        margin-top: 2.5rem;
+        display: flex;
+        justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        p {
+            padding: 1.2rem 1.4rem;
+            font-weight: 700;
+            display: inline;
+            background-color: #055d72;
+            color: white;
+            border-radius: .5rem;
+        }
+    }
+}
+
+#welcome__info {
+    margin-top: 2.5rem;
+    margin-bottom: .5rem;
+}

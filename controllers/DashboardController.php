@@ -31,6 +31,7 @@ class DashboardController {
 
             $proyecto = new Proyecto($_POST);
             $alertas = $proyecto->validarProyecto();
+            $alertas = $proyecto->validar_usuarioid();
 
             if(empty($alertas)) {
 
@@ -85,6 +86,7 @@ class DashboardController {
             $usuario->sincronizar($_POST);
             
             $alertas = $usuario->validar_perfil();
+            $alertas = $usuario->validar_usuarioid();
 
             if(empty($alertas)) {
 
@@ -125,6 +127,7 @@ class DashboardController {
             $usuario = Usuario::find($_SESSION['id']);
 
             $usuario->sincronizar($_POST);
+            $alertas = $usuario->validar_usuarioid();
             $alertas = $usuario->nuevo_password();
 
             if(empty($alertas)) {

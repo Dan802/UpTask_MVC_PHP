@@ -28,4 +28,12 @@ class Proyecto extends ActiveRecord {
 
         return self::$alertas;
     }
+
+    public function validar_usuarioid() {
+        if((int)$_SESSION['id'] === 1) {
+            self::$alertas['error'][] = 'Para realizar esta acción debes crear tu propia cuenta';
+        }
+
+        return self::$alertas;
+    }
 }

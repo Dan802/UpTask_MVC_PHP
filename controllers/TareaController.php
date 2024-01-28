@@ -28,6 +28,15 @@ class TareaController {
     public static function crear() {
         if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
             
+            if((int)$_SESSION['id'] === 1) {
+                $dataToReturn = [
+                    'tipo' => 'error',
+                    'mensaje' => 'Para realizar esta acción debes crear tu propia cuenta'
+                ];
+                echo json_encode($dataToReturn);
+                return;
+            }
+
             // Verificamos que exista el proyecto al cual queremos añadir la tarea
             $proyectoId = $_POST['proyectoId'];
             $proyecto = Proyecto::where('url', $proyectoId); 
@@ -62,12 +71,21 @@ class TareaController {
     public static function actualizar() {
         if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
             
+            if((int)$_SESSION['id'] === 1) {
+                $dataToReturn = [
+                    'tipo' => 'error',
+                    'mensaje' => 'Para realizar esta acción debes crear tu propia cuenta'
+                ];
+                echo json_encode($dataToReturn);
+                return;
+            }
+
             $proyecto = Proyecto::where('url', $_POST['url']);
             
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION['id']) {
                 $dataToReturn = [
                     'tipo' => 'error',
-                    'mensaje' => 'Hubo un error al agregar la tarea'
+                    'mensaje' => 'Hubo un error al actualizar la tarea'
                 ];
                 echo json_encode($dataToReturn);
                 return;
@@ -85,13 +103,22 @@ class TareaController {
                     'proyectoId' => $proyecto->id
                 ];
 
-                echo json_encode(['respuesta' => $dataToReturn]);
+                echo json_encode($dataToReturn);
             }
         }
     }
    
     public static function eliminar() {
         if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+
+            if((int)$_SESSION['id'] === 1) {
+                $dataToReturn = [
+                    'tipo' => 'error',
+                    'mensaje' => 'Para realizar esta acción debes crear tu propia cuenta'
+                ];
+                echo json_encode($dataToReturn);
+                return;
+            }
 
             $proyecto = Proyecto::where('url', $_POST['url']);
             
