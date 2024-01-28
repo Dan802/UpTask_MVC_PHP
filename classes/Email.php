@@ -44,7 +44,7 @@ class Email extends ActiveRecord{
         $contenido .= '</html>';
         $phpmailer->Body = $contenido;
 
-        // $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $phpmailer->AltBody = "Ve al siguiente enlace para activar tu cuenta:  " . $linkConfirmar;
 
         if($phpmailer->send()){
@@ -52,7 +52,6 @@ class Email extends ActiveRecord{
             return true;
         }else{
             // echo 'Message could not be sent.';
-            // echo 'Mailer Error: ' . $phpmailer->ErrorInfo;
             self::$alertas['error'][] = 'No se ha podido enviar el correo, inténtelo nuevamente';
             self::$alertas['error'][] = $phpmailer->ErrorInfo;
             return false;
@@ -84,7 +83,7 @@ class Email extends ActiveRecord{
         $contenido .= '</html>';
         $phpmailer->Body = $contenido;
 
-        // $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $phpmailer->AltBody = "Ve al siguiente enlace: " . $linkReestablecer;
 
         if($phpmailer->send()){
@@ -93,7 +92,6 @@ class Email extends ActiveRecord{
             return true;
         }else{
             // echo 'Message could not be sent.';
-            // echo 'Mailer Error: ' . $mail->ErrorInfo;
             self::$alertas['error'][] = 'No se ha podido enviar el correo, inténtelo nuevamente';
             self::$alertas['error'][] = $phpmailer->ErrorInfo;
             return false;
