@@ -79,25 +79,19 @@ class LoginController {
 
                     $email = new Email($usuario->correo, $usuario->nombre, $usuario->token);
                     $enviarEmail = $email->enviarConfirmacion();
+                    $resultadoSave = $usuario->guardar();
 
-                    if($enviarEmail) {
-                        $resultadoSave = $usuario->guardar();
-                    } else {
-                        $resultadoSave = false;
-                    }
-
-                    if($enviarEmail && $resultadoSave) {
+                    if($enviarEmail && $resultadoSave['resultado']) {
                         header('Location: /mensaje');
-                    }
-
-                    if(!$resultadoSave) {
+                    } else if(!$resultadoSave) {
                         Usuario::setAlerta('error', 'No se ha podido guardar el usuario, inténtelo nuevamente.');
+                    } else if(!$enviarEmail) {
+                        Usuario::setAlerta('error', 'No se ha podido enviar el correo, por favor contacte a soporte.');
                     }
 
                 } else {
                     Usuario::setAlerta('error', 'El usuario ya esta registrado');
                 }
-                
             }
 
             $alertas = Usuario::getAlertas();
